@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="description" content="Интерактивный тренажёр Python">
+<title>Python Lab</title>
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--text:#0f172a;--muted:#64748b;--blue:#2563eb;--border:#e2e8f0;--code:#0b1220}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}button{font:inherit}
+.hero{background:linear-gradient(145deg,#0f172a,#1e293b);color:#fff;padding:28px 16px 34px;border-radius:0 0 30px 30px}.wrap{width:min(720px,100%);margin:auto;padding:0 16px}
+.badge{display:inline-block;padding:6px 10px;border:1px solid #ffffff2b;background:#ffffff12;border-radius:99px;font-size:12px;color:#cbd5e1}
+h1{font-size:31px;line-height:1.05;margin:13px 0 9px}.hero p{margin:0;color:#cbd5e1;line-height:1.45}.progress{margin-top:18px;height:7px;background:#ffffff20;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:#60a5fa;border-radius:20px;transition:.3s}
+main{padding:18px 0 35px}.section-title{margin:0 0 12px;font-size:19px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:20px;padding:17px;text-align:left;min-height:135px;box-shadow:0 5px 18px #0f172a0a;cursor:pointer;transition:.15s}.card:active{transform:scale(.98)}.icon{font-size:28px}.cmd{font:700 18px monospace;color:var(--blue);margin-top:11px}.desc{font-size:13px;color:var(--muted);margin-top:5px}
+.lesson{display:none;margin-top:17px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:18px;box-shadow:0 8px 25px #0f172a12}.lesson.show{display:block}.lesson-head{display:flex;justify-content:space-between;gap:10px}.lesson h2{font-size:21px;margin:0 0 4px}.meta,.counter,.note{font-size:13px;color:var(--muted)}.close{border:0;background:#f1f5f9;border-radius:12px;width:40px;height:40px}
+.code{margin-top:15px;background:var(--code);color:#e2e8f0;border-radius:15px;padding:15px;overflow:auto;font:15px/1.6 monospace}.kw{color:#c084fc}.str{color:#86efac}.fn{color:#67e8f9}.num{color:#fbbf24}
+.stage{margin-top:14px;min-height:155px;border:1px dashed #cbd5e1;background:#f8fafc;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:center;text-align:center}.step{display:none;width:100%;animation:in .3s ease}.step.active{display:block}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.big{font-size:20px;font-weight:750}.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:7px}.box{background:#fff;border:1px solid var(--border);padding:10px 13px;border-radius:12px;font-family:monospace}.arrow{font-size:23px;margin:10px}.result{margin:12px auto 0;background:#0b1220;color:#86efac;border-radius:11px;padding:12px;font:600 15px monospace;max-width:430px;text-align:left}
+.controls{display:flex;gap:10px;margin-top:14px}.ctrl{flex:1;border:0;border-radius:13px;padding:13px;background:var(--blue);color:#fff;font-weight:750;cursor:pointer}.ctrl.secondary{background:#e2e8f0;color:#0f172a}.counter{text-align:center;margin-top:9px}.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.card{min-height:110px}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap"><span class="badge">🐍 Интерактивный тренажёр</span><h1>Python Lab</h1><p>Выбери команду и посмотри, как Python выполняет её шаг за шагом.</p><div class="progress"><i id="progress"></i></div></div></header>
+<main class="wrap">
+<h2 class="section-title">Команды Python</h2>
+<div class="grid">
+<button class="card" onclick="openLesson('len')"><div class="icon">📏</div><div class="cmd">len()</div><div class="desc">Количество символов и элементов</div></button>
+<button class="card" onclick="openLesson('upper')"><div class="icon">🔠</div><div class="cmd">upper()</div><div class="desc">Верхний регистр</div></button>
+<button class="card" onclick="openLesson('split')"><div class="icon">✂️</div><div class="cmd">split()</div><div class="desc">Разделение строки</div></button>
+<button class="card" onclick="openLesson('strip')"><div class="icon">🧹</div><div class="cmd">strip()</div><div class="desc">Удаление пробелов по краям</div></button>
+<button class="card" onclick="openLesson('join')"><div class="icon">🔗</div><div class="cmd">join()</div><div class="desc">Объединение элементов</div></button>
+<button class="card" onclick="openLesson('pop')"><div class="icon">📤</div><div class="cmd">pop()</div><div class="desc">Удаление элемента из списка</div></button>
+</div>
+<section id="lesson" class="lesson">
+<div class="lesson-head"><div><h2 id="title"></h2><div class="meta">Пошаговая демонстрация</div></div><button class="close" onclick="closeLesson()">✕</button></div>
+<div class="code" id="code"></div><div class="stage" id="stage"></div>
+<div class="controls"><button class="ctrl secondary" onclick="prevStep()">← Назад</button><button class="ctrl" id="next" onclick="nextStep()">Далее →</button></div>
+<div class="counter" id="counter"></div></section>
+<div class="footer">Python Lab • работает прямо в браузере телефона</div>
+</main>
+<script>
+const L={
+len:{title:"len() — считаем элементы",code:`text = <span class="str">"Python"</span><br><span class="fn">print</span>(<span class="fn">len</span>(text))`,steps:[`<div class="big">1. Есть строка <b>"Python"</b></div>`,`<div class="flow"><span class="box">P</span><span class="box">y</span><span class="box">t</span><span class="box">h</span><span class="box">o</span><span class="box">n</span></div><p class="note">В строке 6 символов.</p>`,`<div class="big">2. <b>len()</b> считает количество</div><div class="arrow">⬇️</div><div class="box">len("Python") → 6</div>`,`<div class="big">3. Результат</div><div class="result">6</div>`]},
+upper:{title:"upper() — верхний регистр",code:`text = <span class="str">"hello"</span><br><span class="fn">print</span>(text.<span class="fn">upper</span>())`,steps:[`<div class="big">1. Исходная строка</div><div class="result">hello</div>`,`<div class="big">2. <b>upper()</b> меняет буквы на заглавные</div><div class="flow"><span class="box">h → H</span><span class="box">e → E</span><span class="box">l → L</span></div>`,`<div class="big">3. Результат</div><div class="result">HELLO</div>`]},
+split:{title:"split() — разделяем строку",code:`text = <span class="str">"Python Java C++"</span><br><span class="fn">print</span>(text.<span class="fn">split</span>())`,steps:[`<div class="big">1. Одна строка</div><div class="result">Python Java C++</div>`,`<div class="big">2. <b>split()</b> разделяет строку</div><div class="flow"><span class="box">Python</span><span>|</span><span class="box">Java</span><span>|</span><span class="box">C++</span></div>`,`<div class="big">3. Получаем список</div><div class="result">["Python", "Java", "C++"]</div>`]},
+strip:{title:"strip() — убираем пробелы",code:`text = <span class="str">"  Python  "</span><br><span class="fn">print</span>(text.<span class="fn">strip</span>())`,steps:[`<div class="big">1. Есть пробелы по краям</div><div class="result">"  Python  "</div>`,`<div class="big">2. <b>strip()</b> очищает начало и конец</div><div class="flow"><span class="box">🧹</span><span class="box"><b>Python</b></span><span class="box">🧹</span></div>`,`<div class="big">3. Результат</div><div class="result">Python</div>`]},
+join:{title:"join() — объединяем элементы",code:`words = [<span class="str">"Python"</span>, <span class="str">"это"</span>, <span class="str">"круто"</span>]<br><span class="fn">print</span>(<span class="str">" "</span>.<span class="fn">join</span>(words))`,steps:[`<div class="big">1. Есть список слов</div><div class="flow"><span class="box">Python</span><span class="box">это</span><span class="box">круто</span></div>`,`<div class="big">2. Пробел становится разделителем</div><div class="flow"><span class="box">Python</span><span>+</span><span class="box">это</span><span>+</span><span class="box">круто</span></div>`,`<div class="big">3. Получаем одну строку</div><div class="result">Python это круто</div>`]},
+pop:{title:"pop() — удаляем элемент",code:`numbers = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>]<br>numbers.<span class="fn">pop</span>()<br><span class="fn">print</span>(numbers)`,steps:[`<div class="big">1. Исходный список</div><div class="flow"><span class="box">10</span><span class="box">20</span><span class="box">30</span></div>`,`<div class="big">2. <b>pop()</b> без индекса удаляет последний элемент</div><div class="arrow">[10, 20, <b>30</b>] → 🗑️</div>`,`<div class="big">3. Список после удаления</div><div class="result">[10, 20]</div>`]}
+};
+let current=null,step=0;
+function openLesson(k){current=L[k];step=0;title.textContent=current.title;code.innerHTML=current.code;lesson.classList.add("show");render();lesson.scrollIntoView({behavior:"smooth",block:"start"})}
+function render(){stage.innerHTML=current.steps.map((x,i)=>`<div class="step ${i===step?"active":""}">${x}</div>`).join("");counter.textContent=`Шаг ${step+1} из ${current.steps.length}`;next.textContent=step===current.steps.length-1?"Завершить ✓":"Далее →";progress.style.width=((step+1)/current.steps.length*100)+"%"}
+function nextStep(){if(!current)return;if(step<current.steps.length-1){step++;render()}else closeLesson()}
+function prevStep(){if(current&&step>0){step--;render()}}
+function closeLesson(){lesson.classList.remove("show");current=null;progress.style.width="0%"}
+</script>
+</body>
+</html>
